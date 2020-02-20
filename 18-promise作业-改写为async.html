@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			#list{width: 500px; min-height: 200px; border: 1px dotted pink;}
+		</style>
+	</head>
+	<body>
+		<h2>旅游列表</h2>
+		<ul id="list"></ul>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script>
+			$(function(){
+				//promise函数
+				function getJson(page){
+					const p = new Promise(function(resolve,reject){
+						$.getJSON("json/0"+page+".json",function(data){
+							resolve(data);
+						})
+					});
+					return p;
+				}
+				//渲染数据
+				function writeHtml(data){
+					var mydata = data.matchedProducts;
+					for(var i = 0;i<mydata.length;i++){
+						var $li = $(`<li>序号：${mydata[i].collection_num}--标题：${mydata[i].pro_title}</li>`);
+						$('#list').append($li);
+					}
+				}
+				
+				//函数的调用
+				async function task(){
+					let page1 = await getJson(1);
+					writeHtml(page1);
+					let page2 = await getJson(2);
+					writeHtml(page2);
+					let page3 = await getJson(3);
+					writeHtml(page3);
+				}
+				//调用
+				task();
+			})
+			/*
+			getJson(1).then(function(data){
+				writeHtml(data);
+				//获取第二页数据
+				return getJson(2);
+			}).then(function(data){
+				writeHtml(data);
+				//获取第三页数据
+				return getJson(3);
+			}).then(function(data){
+				writeHtml(data);
+			}).catch(function(e){
+				console.log("获取数据出错："+e);
+			})
+			*/
+		</script>
+		
+	</body>
+</html>

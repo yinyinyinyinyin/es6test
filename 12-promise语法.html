@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			//解决异步问题  ： ajax  axios  跨域
+			//es6 promise 是解决异步回调的回调地狱问题的
+			//1.promise 基础语法
+			// function getObj(){
+			// 	//创建新的promise对象
+			// 	//回调函数里面的参数有两个 ，一个是resolve 表示成功的回调；另一个是reject 表示失败的回调
+			// 	let p = new Promise(function(resolve,reject){
+			// 		//模拟异步操作
+			// 		setTimeout(function(){
+			// 			console.log("延时器开始执行了");
+			// 			resolve('执行了成功的回调函数');
+			// 		},2000);
+			// 	});
+			// 	return p;
+			// }
+			// //函数的调用
+			// //getObj();
+			// //问题：怎么样才能让 resolve 运行
+			// //then里面的第一个function和 resolve 是配对的
+			// getObj().then(function(data){
+			// 	console.log("成功的回调函数已经运行并接收");
+			// 	console.log(data);
+			// })
+			
+			// console.log("promise外面");
+			
+			
+			//2.有成功的回调和失败的回调的Promise
+			// function getObj1(){
+			// 	var p = new Promise(function(resolve,reject){
+			// 		let num = false;
+			// 		setTimeout(function(){
+			// 			if(num){
+			// 				resolve("调用成功");
+			// 			}else{
+			// 				reject("调用失败");
+			// 			}
+			// 		},2000);
+			// 	});
+			// 	return p;//函数必须返回promise对象，调用时才能使用 .then的语法
+			// }
+			// //promise 在调用时必须使用 .then ，里面有两个参数，第一个参数是 成功的回调函数；第二个参数是失败的回调函数
+			// getObj1().then(function(data){
+			// 	console.log("success");
+			// 	console.log(data);
+			// },function(error){
+			// 	console.log("error");
+			// 	console.log(error);
+			// });
+			
+			//3.实例
+			//需求：生成一个1-10的随机数，如果随机数大于5就显示成功，
+			function getRandom(){
+				var p = new Promise(function(resolve,reject){
+					setTimeout(function(){
+						//获取随机数
+						var i = Math.ceil(Math.random()*10);//1-10的随机数
+						if(i<=5){
+							reject("失败："+i);
+						}else{
+							resolve("成功"+i);
+						}
+					},1000);
+				});
+				return p;
+			}
+			//调用
+			getRandom().then(function(data){
+				console.log(data);
+			},function(error){
+				console.log(error);
+			})
+			
+			//如果是多次调用，那么我们的写法是怎样的
+			//作业：将10-****.html改写为promise的形式，调用一页数据
+			
+			
+			/*
+			promise:解决异步回调的回调地狱问题，
+			特点：可以将渲染数据和获取数据分隔开，写在不同的文件里，有利于模块化
+			
+			1. new Promise()
+			2.在Promise(function(resolve,reject ){})  有一个回调函数的参数
+			3.resolve 表示成功的回调
+			4.reject  表示失败的回调
+			
+			5.做异步处理时必须返回 promise对象，才能够使用 .then的写法
+			6.  .then(function(data){//成功  data 接收的是resolve },function(error){//失败  error接收的reject})有两个参数都是函数
+			7.为了让报错可以被抓住  。try  ...catch ... finally   就是如果出错了，那么后面的.then都不会再执行
+			
+			promise：三种状态 ：resolved(已成功)  rejected(已失败) pending(进行中)
+			
+			
+			*/
+			
+		</script>
+	</body>
+</html>

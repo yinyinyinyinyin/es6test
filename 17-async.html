@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			//async await  的语法糖  es7之后才出现  和 promise 、generator都有一定的关系
+			//async 表示异步，属于异步操作的关键字
+			//1.实例
+			// async function hello(){
+			// 	return "hello Async";
+			// }
+			//对于 用 关键字async标识的异步函数，返回值永远都是一个 promise对象，
+			//对象里面包含两个值：一个是promise的状态(成功或失败)， 另一个是传递的参数value
+			//console.log(hello());
+			//因为返回的是promise, 我们调用时需要写 .then
+			// hello().then(function(data){
+			// 	console.log(data);
+			// });
+			
+			//2.实例
+			// function testAwait(){
+			// 	let p =  new Promise((resolve)=>{
+			// 		setTimeout(function(){
+			// 				console.log('text Await');
+			// 				resolve();
+			// 		},1000)
+			// 	})
+			// 	return p;
+			// }
+			// //调用
+			// async function hello(){
+			// 	await testAwait();//等待 ****异步操作完成
+			// 	console.log("hello world!");
+			// }
+			// hello();
+			//testAwait 设置了1秒的延时
+			/*
+			await 阻塞了下面语句的执行，必须等到 text Await打印后才能继续执行*/
+			
+			//使用async await实现 解决异步回调地狱问题  
+			//吃鸡代码
+			function zhunbei(){
+				return new Promise((resolve)=>{
+					setTimeout(function(){
+						console.log("1.准备清洗、切块");
+						resolve();
+					},2000);
+				})
+			}
+			//炒鸡
+			function chaoji(){
+				return new Promise((resolve)=>{
+					setTimeout(function(){
+						console.log("2.炒鸡");
+						resolve();
+					},2000);
+				})
+			}
+			
+			//炖鸡
+			function dunji(){
+				return new Promise((resolve)=>{
+					setTimeout(function(){
+						console.log("3.炖鸡");
+						resolve();
+					},2000);
+				})
+			}
+			//加调料
+			function tiaoliao(){
+				return new Promise((resolve)=>{
+					setTimeout(function(){
+						console.log("4.加入调料");
+						resolve();
+					},2000);
+				})
+			}
+			//吃鸡
+			function chiji(){
+				return new Promise((resolve)=>{
+					setTimeout(function(){
+						console.log("5.吃鸡");
+						resolve();
+					},2000);
+				})
+			}
+			
+			//使用 async await去调用每一个步骤
+			async function task(){
+				console.log("start");
+				await zhunbei();
+				await chaoji();
+				await dunji();
+				await tiaoliao();
+				await chiji();
+				console.log("end");
+			}
+			task();
+			/*
+			注意：
+			1.async await 必须和 promise 结合使用
+			2.利用 await的阻塞原理，保证每个流程的顺序执行，
+			3.相比较而言，这种写法比generator简便清晰，无需run的流程控制，实现了更完美的异步处理
+			作业：将 三页数据的调用 改写为 async await的写法
+			*/
+		</script>
+	</body>
+</html>

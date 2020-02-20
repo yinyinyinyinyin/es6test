@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			//1.需求：随机数如果 值大于5显示成功，随机数的值小于等于5显示失败，promise函数需要调用多次
+			// function getObj(page){
+			// 	var p = new Promise(function(resolve,reject){
+			// 		setTimeout(function(){
+			// 			//获取随机数
+			// 			var i = Math.ceil(Math.random()*10);//1-10随机数
+			// 			if(i>5){
+			// 				resolve("成功："+i+"/page:"+page);
+			// 			}else{
+			// 				reject("失败："+i+"/page:"+page);
+			// 			}
+			// 		},1000)
+			// 	});
+			// 	return p;
+			// }
+			// //调用
+			// getObj(1).then(function(data){
+			// 	console.log("第一次调用："+data);
+			// 	return getObj(2);//当第一次返回成功时，第二次调用getObj()函数
+			// },function(error){
+			// 	console.log("第一次调用："+error);
+			// }).then(function(data){
+			// 	console.log("第二次调用："+data);
+			// },function(error){
+			// 	console.log("第二次调用："+error);
+			// });
+			
+			//上面的代码解决了多次调用的问题，
+			//还存在一个问题，当第一次调用就失败时，以后的所有调用是否需要终止
+			
+			
+			//2.如果出错，需要终止promise的调用  ，捕获异常 catch
+			// function getObj(page){
+			// 	var p = new Promise(function(resolve,reject){
+			// 		setTimeout(function(){
+			// 			//获取随机数
+			// 			var i = Math.ceil(Math.random()*10);//1-10随机数
+			// 			if(i>5){
+			// 				resolve("成功："+i+"/page:"+page);
+			// 			}else{
+			// 				reject("失败："+i+"/page:"+page);
+			// 			}
+			// 		},1000)
+			// 	});
+			// 	return p;
+			// }
+			// //.catch(function(e){}) 捕获异常
+			// getObj(1).then(function(data){
+			// 	console.log(data);
+			// 	x+2;
+			// },function(error){
+			// 	console.log(error);
+			// }).catch(function(e){
+			// 	console.log("已经捕获到异常了");
+			// 	console.log(e);
+				
+			// })
+			
+			//捕获异常在多次调用时的使用方式			
+			// function getObj(page){
+			// 	var p = new Promise(function(resolve,reject){
+			// 		setTimeout(function(){
+			// 			//获取随机数
+			// 			var i = Math.ceil(Math.random()*10);//1-10随机数
+			// 			if(i>5){
+			// 				resolve("成功："+i+"/page:"+page);
+			// 			}else{
+			// 				reject("失败："+i+"/page:"+page);
+			// 			}
+			// 		},1000)
+			// 	});
+			// 	return p;
+			// }
+			// //.catch(function(e){}) 捕获异常
+			// getObj(1).then(function(data){//第一页
+			// 	console.log(data);
+			// 	return getObj(2);
+			// }).then(function(data){//第二页
+			// 	console.log(data);
+			// 	return getObj(3);
+			// }).then(function(data){//第三页
+			// 	console.log(data);
+			// }).catch(function(e){
+			// 	console.log("已经捕获到异常了");
+			// 	console.log(e);	
+			// })
+			//注意：如果使用了捕获异常处理catch，接收reject的函数就不需要了
+			//catch 进行捕获异常，如果第一次或第二次执行失败，我们的.then不会继续执行，从而达到目的
+			//处理异常黄金组合： try...catch...finally  ，finally:无论是成功还是失败，必定会执行的方法
+			
+			function getObj(page){
+				var p = new Promise(function(resolve,reject){
+					setTimeout(function(){
+						//获取随机数
+						var i = Math.ceil(Math.random()*10);//1-10随机数
+						if(i>5){
+							resolve("成功："+i+"/page:"+page);
+						}else{
+							reject("失败："+i+"/page:"+page);
+						}
+					},1000)
+				});
+				return p;
+			}
+			//.catch(function(e){}) 捕获异常
+			getObj(1).then(function(data){//第一页
+				console.log(data);
+				return getObj(2);
+			}).then(function(data){//第二页
+				console.log(data);
+				return getObj(3);
+			}).then(function(data){//第三页
+				console.log(data);
+			}).catch(function(e){
+				console.log("已经捕获到异常了");
+				console.log(e);
+			}).finally(function(){
+				console.log("异步调用结束");
+			})
+		</script>
+	</body>
+</html>
